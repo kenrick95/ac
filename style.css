@@ -1,0 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Fira Sans', sans-serif;
+}
+header {
+    font-size: 3em;
+    line-height: 2em;
+    text-align: center;
+    font-weight: 200;
+}
+aside {
+    font-size: .8em;
+    text-align: center;
+}
+footer {
+    font-size: .8em;
+    text-align: center;
+}
+#controls {
+    margin: 0 auto;
+    max-width: 480px;
+    text-align: center;
+    clear: both;
+}
+#main {
+    margin: 0 auto;
+    max-width: 800px;
+    text-align: center;
+    box-shadow:0 0 1em #CCC;
+}
+#score::before {
+    content: "Score: ";
+}
+#score {
+    display: inline-block;
+    font-size: 1em;
+    border: 0;
+    padding: .5em;
+    min-width: 5em;
+    margin: .5em;
+}
+#question {
+    margin: 0em;
+    padding: 1em;
+    min-width: 20em;
+    min-height: 4em;
+    box-shadow:0 0 1em #CCC;
+    text-align: left;
+}
+#options {
+    margin: 0;
+}
+.option {
+    float: left;
+    display: inline-block;
+    cursor: pointer;
+    margin: 1em;
+    padding: 1em;
+    min-width: 20em;
+    min-height: 1em;
+    box-shadow:0 0 1em #CCC;
+    text-align: left;
+}
+.option:hover {
+    box-shadow:0 0 1em #999;
+}
+button {
+    background: inherit;
+    font: inherit;
+    font-size: .7em;
+    box-shadow:0 0 1em #CCC;
+    border: 0;
+    cursor: pointer;
+    padding: 1em;
+    min-width: 5em;
+    margin: .5em;
+}
+button:hover {
+    box-shadow:0 0 1em #999;
+}
+.correct {
+    box-shadow:0 0 1em #2ecc40;
+}
+.wrong {
+    box-shadow:0 0 1em #ff4136;
+}
+.pending {
+    box-shadow:0 0 1em #ffdc00;
+}
+.disabled, button[disabled] {
+    box-shadow:0 0 1em #ddd;
+    color: #ddd;
+    cursor: not-allowed;
+}
+.primary {
+    box-shadow:0 0 1em #7fdbff;
+}
