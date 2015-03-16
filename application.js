@@ -1,5 +1,16 @@
 /*jslint browser:true */
 "use strict";
+// Helper functions
+function shuffleArray(array) {
+    var i, j, temp;
+    for (i = array.length - 1; i > 0; i -= 1) {
+        j = Math.floor(Math.random() * (i + 1));
+        temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
 var Question = function (item) {
     this.content = item.content;
     this.options = item.options;
@@ -8,8 +19,18 @@ var Question = function (item) {
 Question.prototype.content = null;
 Question.prototype.options = [null, null, null, null];
 Question.prototype.correctOption = null;
+Question.prototype.fiftyOtherOption = null;
 Question.prototype.fifty = function () {
-    // randomly? or purposely?
+    if (this.fiftyOtherOption === null) {
+        // randomly
+        return shuffleArray([this.correctOption,
+            this.options.indexOf(this.options.filter(function (element, index) {
+                return (index !== this.correctOption);
+            }.bind(this))[Math.floor(Math.random() * 3)])
+            ]);
+    }
+    return shuffleArray([this.correctOption, this.fiftyOtherOption]);
+
 };
 var Ac = function (receivedData) { this.init(receivedData); };
 Ac.prototype.data = []; //collection of questions
@@ -31,6 +52,6 @@ Ac.prototype.init = function (receivedData) {
             this.data.push(new Question(receivedData[item]));
         }
     }
-
+    this.data = shuffleArray(this.data);
     this.currentQuestion = this.data[0];
 };

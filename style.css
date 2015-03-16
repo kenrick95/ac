@@ -81,11 +81,25 @@ button {
 button:hover {
     box-shadow:0 0 1em #999;
 }
+@keyframes blink {  
+    0% { box-shadow:0 0 1em #ff4136; }
+    50% { box-shadow:0 0 1em #ffdc00; }
+    100% { box-shadow:0 0 1em #2ecc40; }
+}
+@keyframes showout {  
+    0% { box-shadow:0 0 1em #2ecc40; }
+    100% { box-shadow: 0 0 3em #2ecc40; }
+}
 .correct {
     box-shadow:0 0 1em #2ecc40;
+    animation: showout .2s ease-out 1;
+}
+.correctAnim {
+    animation: blink .4s ease 8 alternate;
 }
 .wrong {
     box-shadow:0 0 1em #ff4136;
+    animation: blink .4s ease 8 alternate;
 }
 .pending {
     box-shadow:0 0 1em #ffdc00;
@@ -97,4 +111,9 @@ button:hover {
 }
 .primary {
     box-shadow:0 0 1em #7fdbff;
+}
+.fiftyHide {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 0.5s, opacity 0.5s linear;
 }

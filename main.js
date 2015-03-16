@@ -1,4 +1,5 @@
 /*jslint browser:true, plusplus: true */
+/*globals Ac*/
 "use strict";
 // http://stackoverflow.com/a/18278346
 function loadJSON(path, success, error) {
@@ -35,8 +36,12 @@ document.addEventListener("DOMContentLoaded", function () {
         show();
         selectedAnswer = null;
         document.getElementById('checkAns').removeAttribute('disabled');
+        document.getElementById('helpFifty').removeAttribute('disabled');
+        document.getElementById('helpAudience').removeAttribute('disabled');
+        document.getElementById('helpFriend').removeAttribute('disabled');
         document.getElementById('nextQn').setAttribute('disabled', 'disabled');
     }
+
     loadJSON('test.json',
         function (data) {
             console.log(data);
@@ -44,7 +49,8 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         function (xhr) { console.error(xhr); }
         );
-    function optClick (e) {
+
+    function optClick() {
         console.log(this.dataset.value);
         // remove previous lock
         if (selectedAnswer !== null) {
@@ -55,10 +61,12 @@ document.addEventListener("DOMContentLoaded", function () {
         selectedAnswer = parseInt(this.dataset.value, 10);
         options[selectedAnswer].classList.add("pending");
     }
+
     for (i = 0; i < 4; i++) {
         options[i].addEventListener("click", optClick);
     }
-    document.getElementById('checkAns').addEventListener('click', function (e) {
+
+    document.getElementById('checkAns').addEventListener('click', function () {
         console.log(selectedAnswer);
         if (selectedAnswer !== null) {
             options[selectedAnswer].classList.remove("pending");
@@ -67,32 +75,73 @@ document.addEventListener("DOMContentLoaded", function () {
         if (ac.checkAnswer(selectedAnswer)) {
             // correct
             if (selectedAnswer !== null) {
-                options[selectedAnswer].classList.add("correct");
+                options[selectedAnswer].classList.add("correctAnim");
+                options[selectedAnswer].addEventListener("animationend", function () {
+                    options[selectedAnswer].classList.remove("correctAnim");
+                    options[selectedAnswer].classList.add("correct");
+                    score++;
+                }, false);
             }
-            score++;
             document.getElementById('score').textContent = score;
         } else {
             // wrong
             if (selectedAnswer !== null) {
                 options[selectedAnswer].classList.add("wrong");
+                options[selectedAnswer].addEventListener("animationend", function () {
+                    options[curQn.correctOption].classList.add("correct");
+                }, false);
+            } else {
+                options[curQn.correctOption].classList.add("correct");
             }
-            options[curQn.correctOption].classList.add("correct");
         }
+        this.setAttribute('disabled', 'disabled');
     });
-    document.getElementById('nextQn').addEventListener('click', function (e) {
+
+    document.getElementById('nextQn').addEventListener('click', function () {
+        document.getElementById('checkAns').removeAttribute('disabled');
         if (selectedAnswer !== null) {
             options[selectedAnswer].classList.remove("pending");
             options[selectedAnswer].classList.remove("wrong");
         }
+        for (i = 0; i < 4; i++) {
+            options[i].classList.remove("fiftyHide");
+        }
         options[curQn.correctOption].classList.remove("correct");
         curQn = ac.getNextQuestion();
         if (curQn === undefined) {
-            alert("End of AC");
+            window.alert("End of AC");
             document.getElementById('checkAns').setAttribute('disabled', 'disabled');
         } else {
             show();
         }
         selectedAnswer = null;
+        this.setAttribute('disabled', 'disabled');
+    });
+
+    document.getElementById('helpFifty').addEventListener('click', function () {
+        if (!this.disabled) {
+            var fiftyOptions = curQn.fifty();
+            console.log(fiftyOptions);
+            for (i = 0; i < 4; i++) {
+                if (fiftyOptions.indexOf(i) === -1) {
+                    options[i].classList.add("fiftyHide");
+                }
+            }
+        }
+        this.setAttribute('disabled', 'disabled');
+    });
+
+    document.getElementById('helpAudience').addEventListener('click', function () {
+        if (!this.disabled) {
+            window.alert("Ask for audience");
+        }
+        this.setAttribute('disabled', 'disabled');
+    });
+
+    document.getElementById('helpFriend').addEventListener('click', function () {
+        if (!this.disabled) {
+            window.alert("Call a friend.");
+        }
         this.setAttribute('disabled', 'disabled');
     });
 }, false);
