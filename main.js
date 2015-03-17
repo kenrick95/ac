@@ -20,26 +20,33 @@ function loadJSON(path, success, error) {
     xhr.open("GET", path, true);
     xhr.send();
 }
+function elemId(id) {
+    return document.getElementById(id);
+}
 document.addEventListener("DOMContentLoaded", function () {
     // get question from somewhere, and process it
-    var options = document.getElementById('options').children, i,
-        ac = null, curQn = null, selectedAnswer = null, score = 0;
+    var options = elemId('options').children, i,
+        ac = null, curQn = null, selectedAnswer = null, score = 0, questionFinished = false,
+        help = ['helpFifty', 'helpAudience', 'helpFriend'];
+
     function show() {
-        document.getElementById('question').textContent = curQn.content;
+        elemId('question').textContent = curQn.content;
         for (i = 0; i < 4; i++) {
             options[i].textContent = curQn.options[i];
         }
     }
+
     function init(data) {
         ac = new Ac(data);
         curQn = ac.currentQuestion;
         show();
         selectedAnswer = null;
-        document.getElementById('checkAns').removeAttribute('disabled');
-        document.getElementById('helpFifty').removeAttribute('disabled');
-        document.getElementById('helpAudience').removeAttribute('disabled');
-        document.getElementById('helpFriend').removeAttribute('disabled');
-        document.getElementById('nextQn').setAttribute('disabled', 'disabled');
+        elemId('checkAns').removeAttribute('disabled');
+        help.forEach(function (value) {
+            elemId(value).removeAttribute('disabled');
+        });
+        elemId('nextQn').setAttribute('disabled', 'disabled');
+        questionFinished = false;
     }
 
     loadJSON('test.json',
@@ -51,7 +58,12 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
     function optClick() {
-        console.log(this.dataset.value);
+        console.log("clicked option: " + this.dataset.value);
+        // prevent click if question is finished
+        if (questionFinished) {
+            return;
+        }
+
         // remove previous lock
         if (selectedAnswer !== null) {
             options[selectedAnswer].classList.remove("pending");
@@ -61,17 +73,20 @@ document.addEventListener("DOMContentLoaded", function () {
         selectedAnswer = parseInt(this.dataset.value, 10);
         options[selectedAnswer].classList.add("pending");
     }
-
     for (i = 0; i < 4; i++) {
         options[i].addEventListener("click", optClick);
+        options[i].classList.add("active");
     }
 
-    document.getElementById('checkAns').addEventListener('click', function () {
+    elemId('checkAns').addEventListener('click', function () {
         console.log(selectedAnswer);
         if (selectedAnswer !== null) {
             options[selectedAnswer].classList.remove("pending");
         }
-        document.getElementById('nextQn').removeAttribute('disabled');
+
+        questionFinished = true;
+
+
         if (ac.checkAnswer(selectedAnswer)) {
             // correct
             if (selectedAnswer !== null) {
@@ -79,30 +94,38 @@ document.addEventListener("DOMContentLoaded", function () {
                 options[selectedAnswer].addEventListener("animationend", function () {
                     options[selectedAnswer].classList.remove("correctAnim");
                     options[selectedAnswer].classList.add("correct");
+                    elemId('nextQn').removeAttribute('disabled');
                     score++;
                 }, false);
             }
-            document.getElementById('score').textContent = score;
+            elemId('score').textContent = score;
         } else {
             // wrong
             if (selectedAnswer !== null) {
                 options[selectedAnswer].classList.add("wrong");
                 options[selectedAnswer].addEventListener("animationend", function () {
                     options[curQn.correctOption].classList.add("correct");
+                    elemId('nextQn').removeAttribute('disabled');
                 }, false);
             } else {
                 options[curQn.correctOption].classList.add("correct");
+                elemId('nextQn').removeAttribute('disabled');
             }
         }
         this.setAttribute('disabled', 'disabled');
+        for (i = 0; i < 4; i++) {
+            options[i].classList.add("optionDisabled");
+            options[i].classList.remove("active");
+        }
     });
 
-    document.getElementById('nextQn').addEventListener('click', function () {
-        document.getElementById('checkAns').removeAttribute('disabled');
+    elemId('nextQn').addEventListener('click', function () {
+        elemId('checkAns').removeAttribute('disabled');
         if (selectedAnswer !== null) {
             options[selectedAnswer].classList.remove("pending");
             options[selectedAnswer].classList.remove("wrong");
         }
+        questionFinished = false;
         for (i = 0; i < 4; i++) {
             options[i].classList.remove("fiftyHide");
         }
@@ -110,15 +133,19 @@ document.addEventListener("DOMContentLoaded", function () {
         curQn = ac.getNextQuestion();
         if (curQn === undefined) {
             window.alert("End of AC");
-            document.getElementById('checkAns').setAttribute('disabled', 'disabled');
+            elemId('checkAns').setAttribute('disabled', 'disabled');
         } else {
             show();
         }
         selectedAnswer = null;
         this.setAttribute('disabled', 'disabled');
+        for (i = 0; i < 4; i++) {
+            options[i].classList.remove("optionDisabled");
+            options[i].classList.add("active");
+        }
     });
 
-    document.getElementById('helpFifty').addEventListener('click', function () {
+    elemId('helpFifty').addEventListener('click', function () {
         if (!this.disabled) {
             var fiftyOptions = curQn.fifty();
             console.log(fiftyOptions);
@@ -131,14 +158,14 @@ document.addEventListener("DOMContentLoaded", function () {
         this.setAttribute('disabled', 'disabled');
     });
 
-    document.getElementById('helpAudience').addEventListener('click', function () {
+    elemId('helpAudience').addEventListener('click', function () {
         if (!this.disabled) {
-            window.alert("Ask for audience");
+            window.alert("Ask the audience");
         }
         this.setAttribute('disabled', 'disabled');
     });
 
-    document.getElementById('helpFriend').addEventListener('click', function () {
+    elemId('helpFriend').addEventListener('click', function () {
         if (!this.disabled) {
             window.alert("Call a friend.");
         }

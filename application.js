@@ -15,6 +15,7 @@ var Question = function (item) {
     this.content = item.content;
     this.options = item.options;
     this.correctOption = item.correctOption;
+    this.fiftyOtherOption = item.fiftyOtherOption;
 };
 Question.prototype.content = null;
 Question.prototype.options = [null, null, null, null];

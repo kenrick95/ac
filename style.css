@@ -4,6 +4,7 @@
 }
 body {
     font-family: 'Fira Sans', sans-serif;
+    color: #111;
 }
 header {
     font-size: 3em;
@@ -14,6 +15,7 @@ header {
 aside {
     font-size: .8em;
     text-align: center;
+    display: none;
 }
 footer {
     font-size: .8em;
@@ -35,12 +37,15 @@ footer {
     content: "Score: ";
 }
 #score {
-    display: inline-block;
-    font-size: 1em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1.25em;
     border: 0;
     padding: .5em;
     min-width: 5em;
-    margin: .5em;
+    margin: .5em auto;
+    float: right;
 }
 #question {
     margin: 0em;
@@ -64,7 +69,7 @@ footer {
     box-shadow:0 0 1em #CCC;
     text-align: left;
 }
-.option:hover {
+.active:hover {
     box-shadow:0 0 1em #999;
 }
 button {
@@ -90,14 +95,14 @@ button:hover {
     0% { box-shadow:0 0 1em #2ecc40; }
     100% { box-shadow: 0 0 3em #2ecc40; }
 }
-.correct {
+.correct, .correct:hover {
     box-shadow:0 0 1em #2ecc40;
     animation: showout .2s ease-out 1;
 }
 .correctAnim {
     animation: blink .4s ease 8 alternate;
 }
-.wrong {
+.wrong, .wrong:hover {
     box-shadow:0 0 1em #ff4136;
     animation: blink .4s ease 8 alternate;
 }
@@ -107,6 +112,9 @@ button:hover {
 .disabled, button[disabled] {
     box-shadow:0 0 1em #ddd;
     color: #ddd;
+    cursor: not-allowed;
+}
+.optionDisabled {
     cursor: not-allowed;
 }
 .primary {
