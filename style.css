@@ -23,13 +23,14 @@ footer {
 }
 #controls {
     margin: 0 auto;
-    max-width: 480px;
+    max-width: 48em;
     text-align: center;
     clear: both;
 }
 #main {
     margin: 0 auto;
-    max-width: 800px;
+    width: 95%;
+    max-width: 50em;
     text-align: center;
     box-shadow:0 0 1em #CCC;
 }
@@ -49,14 +50,17 @@ footer {
 }
 #question {
     margin: 0em;
+    margin-bottom: 1em;
     padding: 1em;
-    min-width: 20em;
-    min-height: 4em;
+    width: 100%;
+    min-height: 6em;
     box-shadow:0 0 1em #CCC;
     text-align: left;
+    box-sizing: border-box;
 }
 #options {
     margin: 0;
+    width: 100%;
 }
 .option {
     float: left;
@@ -64,10 +68,11 @@ footer {
     cursor: pointer;
     margin: 1em;
     padding: 1em;
-    min-width: 20em;
+    min-width: 23em;
     min-height: 1em;
     box-shadow:0 0 1em #CCC;
     text-align: left;
+    box-sizing: border-box;
 }
 .active:hover {
     box-shadow:0 0 1em #999;
@@ -85,6 +90,19 @@ button {
 }
 button:hover {
     box-shadow:0 0 1em #999;
+}
+
+@media screen and (max-width: 368px){
+    .option {
+        width: 90%;
+        min-width: 1em;
+        padding: 0.5em 1em;
+        margin: 0.5em 1em;
+    }
+    button {
+        padding: 0.5em 1em;
+        margin: 0.5em 1em;
+    }
 }
 @keyframes blink {  
     0% { box-shadow:0 0 1em #ff4136; }
