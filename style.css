@@ -78,7 +78,7 @@ footer {
     box-shadow:0 0 1em #999;
 }
 button {
-    background: inherit;
+    background: #fff;
     font: inherit;
     font-size: .7em;
     box-shadow:0 0 1em #CCC;
