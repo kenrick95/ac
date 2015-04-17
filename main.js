@@ -91,7 +91,13 @@ document.addEventListener("DOMContentLoaded", function () {
             // correct
             if (selectedAnswer !== null) {
                 options[selectedAnswer].classList.add("correctAnim");
-                options[selectedAnswer].addEventListener("animationend webkitAnimationEnd oAnimationEnd", function () {
+                options[selectedAnswer].addEventListener("animationend", function () {
+                    options[selectedAnswer].classList.remove("correctAnim");
+                    options[selectedAnswer].classList.add("correct");
+                    elemId('nextQn').removeAttribute('disabled');
+                    score++;
+                }, false);
+                options[selectedAnswer].addEventListener("webkitAnimationEnd", function () {
                     options[selectedAnswer].classList.remove("correctAnim");
                     options[selectedAnswer].classList.add("correct");
                     elemId('nextQn').removeAttribute('disabled');
@@ -103,7 +109,11 @@ document.addEventListener("DOMContentLoaded", function () {
             // wrong
             if (selectedAnswer !== null) {
                 options[selectedAnswer].classList.add("wrong");
-                options[selectedAnswer].addEventListener("animationend webkitAnimationEnd oAnimationEnd", function () {
+                options[selectedAnswer].addEventListener("webkitAnimationEnd", function () {
+                    options[curQn.correctOption].classList.add("correct");
+                    elemId('nextQn').removeAttribute('disabled');
+                }, false);
+                options[selectedAnswer].addEventListener("animationend", function () {
                     options[curQn.correctOption].classList.add("correct");
                     elemId('nextQn').removeAttribute('disabled');
                 }, false);
