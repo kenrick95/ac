@@ -97,22 +97,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     elemId('nextQn').removeAttribute('disabled');
                     score++;
                 }, false);
-                options[selectedAnswer].addEventListener("webkitAnimationEnd", function () {
-                    options[selectedAnswer].classList.remove("correctAnim");
-                    options[selectedAnswer].classList.add("correct");
-                    elemId('nextQn').removeAttribute('disabled');
-                    score++;
-                }, false);
             }
             elemId('score').textContent = score;
         } else {
             // wrong
             if (selectedAnswer !== null) {
                 options[selectedAnswer].classList.add("wrong");
-                options[selectedAnswer].addEventListener("webkitAnimationEnd", function () {
-                    options[curQn.correctOption].classList.add("correct");
-                    elemId('nextQn').removeAttribute('disabled');
-                }, false);
                 options[selectedAnswer].addEventListener("animationend", function () {
                     options[curQn.correctOption].classList.add("correct");
                     elemId('nextQn').removeAttribute('disabled');
