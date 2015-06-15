@@ -20,6 +20,7 @@ aside {
 footer {
     font-size: .8em;
     text-align: center;
+    visibility: hidden;
 }
 #controls {
     margin: 0 auto;
@@ -32,7 +33,7 @@ footer {
     width: 95%;
     max-width: 50em;
     text-align: center;
-    box-shadow:0 0 1em #CCC;
+    /*box-shadow:0 0 1em #CCC;*/
 }
 #score::before {
     content: "Score: ";
@@ -45,8 +46,24 @@ footer {
     border: 0;
     padding: .5em;
     min-width: 5em;
-    margin: .5em auto;
+    margin: 0;
     float: right;
+    text-align: right;
+}
+#questionNumber::before {
+    content: "Q";
+}
+#questionNumber {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 1.25em;
+    border: 0;
+    padding: .5em;
+    min-width: 5em;
+    margin: 0;
+    float: left;
+    text-align: left;
 }
 #question {
     margin: 0em;
@@ -58,13 +75,21 @@ footer {
     text-align: left;
     box-sizing: border-box;
 }
+#question img {
+    display: block;
+    max-height: 13em;
+    max-width: 23em;
+}
 #options {
     margin: 0;
     width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
 }
 .option {
-    float: left;
-    display: inline-block;
+    /*float: left;
+    display: inline-block;*/
     cursor: pointer;
     margin: 1em;
     padding: 1em;
@@ -73,6 +98,7 @@ footer {
     box-shadow:0 0 1em #CCC;
     text-align: left;
     box-sizing: border-box;
+    flex: 1 0 23em;
 }
 .active:hover {
     box-shadow:0 0 1em #999;
@@ -91,17 +117,27 @@ button {
 button:hover {
     box-shadow:0 0 1em #999;
 }
-
-@media screen and (max-width: 368px){
+#helps, #controls {
+    display: flex;
+    justify-content: center;
+}
+#helps button,  #controls button {
+    flex: 0 0 12em;
+}
+@media screen and (max-width: 25em){
     .option {
         width: 90%;
         min-width: 1em;
         padding: 0.5em 1em;
         margin: 0.5em 1em;
+        flex: 0 0 auto;
     }
     button {
         padding: 0.5em 1em;
         margin: 0.5em 1em;
+    }
+    #helps button,  #controls button {
+        flex: 0 0 auto;
     }
 }
 @keyframes blink {  
@@ -118,14 +154,20 @@ button:hover {
     animation: showout .2s ease-out 1;
 }
 .correctAnim {
-    animation: blink .4s ease 8 alternate;
+    animation: blink .3s ease-in-out 5 alternate;
 }
 .wrong, .wrong:hover {
     box-shadow:0 0 1em #ff4136;
-    animation: blink .4s ease 8 alternate;
+    animation: blink .3s ease-in-out 5 alternate;
+}
+.wrongNoAnimation, .wrongNoAnimation:hover {
+    box-shadow:0 0 1em #ff4136;
+}
+.animate {
+    animation: blink .3s ease-in-out 100 alternate;
 }
 .pending {
-    box-shadow:0 0 1em #ffdc00;
+    box-shadow:0 0 1em #ffdc00 !important;
 }
 .disabled, button[disabled] {
     box-shadow:0 0 1em #ddd;
@@ -142,4 +184,8 @@ button:hover {
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s linear 0.5s, opacity 0.5s linear;
+}
+#log {
+    height: 10em;
+    overflow: auto;
 }
